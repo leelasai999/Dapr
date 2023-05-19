@@ -94,11 +94,7 @@ func UniversalFastHTTPHandler[T proto.Message, U proto.Message](
 		}
 
 		// Invoke the gRPC handler
-		// We need to create a context specific for this because fasthttp's reqCtx is tied to the server's lifecycle and not the request's
-		// See: https://github.com/valyala/fasthttp/issues/1350
-		ctx, cancel := context.WithCancel(reqCtx)
-		res, err := handler(ctx, in)
-		cancel()
+		res, err := handler(reqCtx, in)
 		if err != nil {
 			// Error is already logged by the handlers, we won't log it again
 			universalFastHTTPErrorResponder(reqCtx, err)

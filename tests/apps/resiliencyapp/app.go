@@ -281,7 +281,7 @@ func resiliencyActorMethodHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func appRouter() http.Handler {
+func appRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
 	// Log requests and their processing time

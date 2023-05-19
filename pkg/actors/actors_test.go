@@ -46,7 +46,6 @@ import (
 	"github.com/dapr/dapr/pkg/health"
 	invokev1 "github.com/dapr/dapr/pkg/messaging/v1"
 	"github.com/dapr/dapr/pkg/modes"
-	runtimev1pb "github.com/dapr/dapr/pkg/proto/runtime/v1"
 	"github.com/dapr/dapr/pkg/resiliency"
 	"github.com/dapr/dapr/pkg/runtime/compstore"
 	daprt "github.com/dapr/dapr/pkg/testing"
@@ -2673,7 +2672,7 @@ func TestGetOrCreateActor(t *testing.T) {
 func TestActiveActorsCount(t *testing.T) {
 	ctx := context.Background()
 	t.Run("Actors Count", func(t *testing.T) {
-		expectedCounts := []*runtimev1pb.ActiveActorsCount{{Type: "cat", Count: 2}, {Type: "dog", Count: 1}}
+		expectedCounts := []ActiveActorsCount{{Type: "cat", Count: 2}, {Type: "dog", Count: 1}}
 
 		testActorsRuntime := newTestActorsRuntime()
 		defer testActorsRuntime.Stop()
@@ -2687,7 +2686,7 @@ func TestActiveActorsCount(t *testing.T) {
 	})
 
 	t.Run("Actors Count empty", func(t *testing.T) {
-		expectedCounts := []*runtimev1pb.ActiveActorsCount{}
+		expectedCounts := []ActiveActorsCount{}
 
 		testActorsRuntime := newTestActorsRuntime()
 		defer testActorsRuntime.Stop()

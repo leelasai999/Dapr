@@ -24,7 +24,6 @@ import (
 
 	"github.com/dapr/dapr/pkg/actors"
 	"github.com/dapr/dapr/pkg/apis/resiliency/v1alpha1"
-	"github.com/dapr/dapr/pkg/grpc/universalapi"
 	runtimev1pb "github.com/dapr/dapr/pkg/proto/runtime/v1"
 	"github.com/dapr/dapr/pkg/resiliency"
 	daprt "github.com/dapr/dapr/pkg/testing"
@@ -57,9 +56,7 @@ var testActorResiliency = &v1alpha1.Resiliency{
 func TestRegisterActorReminder(t *testing.T) {
 	t.Run("actors not initialized", func(t *testing.T) {
 		server, lis := startDaprAPIServer(&api{
-			UniversalAPI: &universalapi.UniversalAPI{
-				AppID: "fakeAPI",
-			},
+			id: "fakeAPI",
 		}, "")
 		defer server.Stop()
 
@@ -75,9 +72,7 @@ func TestRegisterActorReminder(t *testing.T) {
 func TestUnregisterActorTimer(t *testing.T) {
 	t.Run("actors not initialized", func(t *testing.T) {
 		server, lis := startDaprAPIServer(&api{
-			UniversalAPI: &universalapi.UniversalAPI{
-				AppID: "fakeAPI",
-			},
+			id: "fakeAPI",
 		}, "")
 		defer server.Stop()
 
@@ -93,9 +88,7 @@ func TestUnregisterActorTimer(t *testing.T) {
 func TestRegisterActorTimer(t *testing.T) {
 	t.Run("actors not initialized", func(t *testing.T) {
 		server, lis := startDaprAPIServer(&api{
-			UniversalAPI: &universalapi.UniversalAPI{
-				AppID: "fakeAPI",
-			},
+			id: "fakeAPI",
 		}, "")
 		defer server.Stop()
 
@@ -111,9 +104,7 @@ func TestRegisterActorTimer(t *testing.T) {
 func TestGetActorState(t *testing.T) {
 	t.Run("actors not initialized", func(t *testing.T) {
 		server, lis := startDaprAPIServer(&api{
-			UniversalAPI: &universalapi.UniversalAPI{
-				AppID: "fakeAPI",
-			},
+			id: "fakeAPI",
 		}, "")
 		defer server.Stop()
 
@@ -142,10 +133,8 @@ func TestGetActorState(t *testing.T) {
 		}).Return(true)
 
 		server, lis := startDaprAPIServer(&api{
-			UniversalAPI: &universalapi.UniversalAPI{
-				AppID:  "fakeAPI",
-				Actors: mockActors,
-			},
+			id:    "fakeAPI",
+			actor: mockActors,
 		}, "")
 		defer server.Stop()
 
@@ -171,9 +160,7 @@ func TestGetActorState(t *testing.T) {
 func TestExecuteActorStateTransaction(t *testing.T) {
 	t.Run("actors not initialized", func(t *testing.T) {
 		server, lis := startDaprAPIServer(&api{
-			UniversalAPI: &universalapi.UniversalAPI{
-				AppID: "fakeAPI",
-			},
+			id: "fakeAPI",
 		}, "")
 		defer server.Stop()
 
@@ -217,10 +204,8 @@ func TestExecuteActorStateTransaction(t *testing.T) {
 		}).Return(true)
 
 		server, lis := startDaprAPIServer(&api{
-			UniversalAPI: &universalapi.UniversalAPI{
-				AppID:  "fakeAPI",
-				Actors: mockActors,
-			},
+			id:    "fakeAPI",
+			actor: mockActors,
 		}, "")
 		defer server.Stop()
 
@@ -261,9 +246,7 @@ func TestExecuteActorStateTransaction(t *testing.T) {
 func TestUnregisterActorReminder(t *testing.T) {
 	t.Run("actors not initialized", func(t *testing.T) {
 		server, lis := startDaprAPIServer(&api{
-			UniversalAPI: &universalapi.UniversalAPI{
-				AppID: "fakeAPI",
-			},
+			id: "fakeAPI",
 		}, "")
 		defer server.Stop()
 
@@ -279,9 +262,7 @@ func TestUnregisterActorReminder(t *testing.T) {
 func TestInvokeActor(t *testing.T) {
 	t.Run("actors not initialized", func(t *testing.T) {
 		server, lis := startDaprAPIServer(&api{
-			UniversalAPI: &universalapi.UniversalAPI{
-				AppID: "fakeAPI",
-			},
+			id: "fakeAPI",
 		}, "")
 		defer server.Stop()
 
@@ -305,14 +286,10 @@ func TestInvokeActorWithResiliency(t *testing.T) {
 		),
 	}
 
-	rs := resiliency.FromConfigurations(logger.NewLogger("grpc.api.test"), testActorResiliency)
 	server, lis := startDaprAPIServer(&api{
-		UniversalAPI: &universalapi.UniversalAPI{
-			AppID:      "fakeAPI",
-			Actors:     &failingActors,
-			Resiliency: rs,
-		},
-		resiliency: rs,
+		id:         "fakeAPI",
+		actor:      &failingActors,
+		resiliency: resiliency.FromConfigurations(logger.NewLogger("grpc.api.test"), testActorResiliency),
 	}, "")
 	defer server.Stop()
 

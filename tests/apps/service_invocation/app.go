@@ -347,7 +347,7 @@ func constructRequest(id, method, httpVerb string, body []byte) *runtimev1pb.Inv
 }
 
 // appRouter initializes restful api router
-func appRouter() http.Handler {
+func appRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
 	// Log requests and their processing time

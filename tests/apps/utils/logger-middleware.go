@@ -41,6 +41,7 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 		// Process the request
 		start := time.Now()
 		next.ServeHTTP(w, r.WithContext(ctx))
-		log.Printf("Request %s: completed in %s", reqID, time.Since(start))
+		dur := time.Now().Sub(start)
+		log.Printf("Request %s: completed in %s", reqID, dur)
 	})
 }

@@ -16,9 +16,6 @@ limitations under the License.
 package universalapi
 
 import (
-	"sync"
-
-	"github.com/dapr/dapr/pkg/actors"
 	"github.com/dapr/dapr/pkg/resiliency"
 	"github.com/dapr/dapr/pkg/runtime/compstore"
 	"github.com/dapr/kit/logger"
@@ -26,14 +23,8 @@ import (
 
 // UniversalAPI contains the implementation of gRPC APIs that are also used by the HTTP server.
 type UniversalAPI struct {
-	AppID                      string
-	Logger                     logger.Logger
-	Resiliency                 resiliency.Provider
-	Actors                     actors.Actors
-	CompStore                  *compstore.ComponentStore
-	ShutdownFn                 func()
-	GetComponentsCapabilitesFn func() map[string][]string
-	ExtendedMetadata           map[string]string
-
-	extendedMetadataLock sync.RWMutex
+	AppID      string
+	Logger     logger.Logger
+	Resiliency resiliency.Provider
+	CompStore  *compstore.ComponentStore
 }

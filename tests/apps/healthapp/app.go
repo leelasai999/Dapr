@@ -178,7 +178,7 @@ func startControlServer() {
 
 	port, _ := strconv.Atoi(controlPort)
 	log.Printf("Health App control server listening on http://:%d", port)
-	utils.StartServer(port, func() http.Handler {
+	utils.StartServer(port, func() *mux.Router {
 		r := mux.NewRouter().StrictSlash(true)
 
 		// Log requests and their processing time
@@ -319,7 +319,7 @@ func startH2C() {
 	log.Println("Server shut down")
 }
 
-func httpRouter() http.Handler {
+func httpRouter() *mux.Router {
 	r := mux.NewRouter().StrictSlash(true)
 
 	// Log requests and their processing time

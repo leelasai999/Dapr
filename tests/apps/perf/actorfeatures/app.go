@@ -110,7 +110,7 @@ func healthzHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // appRouter initializes restful api router
-func appRouter() http.Handler {
+func appRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.HandleFunc("/", indexHandler).Methods("GET")
